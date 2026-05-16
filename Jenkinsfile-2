@@ -1,0 +1,15 @@
+pipeline {
+  agent {
+    dockerContainer {
+      image 'jenkins/inbound-agent:alpine-jdk17'
+    }
+  }
+
+  stages {
+    stage('Test') {
+      steps {
+        sh 'java -version'
+      }
+    }
+  }
+}
