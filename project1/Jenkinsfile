@@ -1,51 +1,32 @@
 pipeline {
     agent any
 
+    parameters {
+        string(
+            name: 'NUMBERS',
+            defaultValue: '10 20 30',
+            description: 'Enter numbers separated by spaces'
+        )
+    }
+
     stages {
-
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Debug') {
-            steps {
-                sh '''
-                pwd
-                ls -R
-                '''
-            }
-        }
 
         stage('Test') {
             steps {
-                sh '''
-                pwd
-                cd project1
-                pwd
-                python3 -m unittest test_sum_numbers.py
-                '''
+                dir('project1') {
+                    sh 'python3 -m unittest test_sum_numbers.py'
+                }
             }
         }
 
         stage('Deploy') {
             steps {
-                sh '''
-                cd project1
-                python3 sum_numbers.py > output.txt
-                '''
+                dir('project1') {
+                    sh """
+                    python3 sum_numbers.py ${params.NUMBERS}
+                    """
+                }
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Application deployed successfully'
-        }
-
-        failure {
-            echo 'Pipeline failed'
         }
     }
 }
