@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh '''
+                python3 -m unittest test_sum_numbers.py
+                '''
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                python3 sum_numbers.py > output.txt
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Application deployed successfully'
+        }
+
+        failure {
+            echo 'Pipeline failed'
+        }
+    }
+}
