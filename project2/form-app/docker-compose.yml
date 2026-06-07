@@ -1,0 +1,47 @@
+services:
+
+frontend:
+
+build: ./frontend
+
+container_name: frontend-container
+
+ports:
+
+- "3000:80"
+
+depends_on:
+
+- backend
+
+backend:
+
+build: ./backend
+
+container_name: flask-backend-container
+
+ports:
+
+- "5000:5000"
+
+depends_on:
+
+- mongodb
+
+mongodb:
+
+image: mongo
+
+container_name: mongodb
+
+ports:
+
+- "27017:27017"
+
+volumes:
+
+- mongo-data:/data/db
+
+volumes:
+
+mongo-data:
