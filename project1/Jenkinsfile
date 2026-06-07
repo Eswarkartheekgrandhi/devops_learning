@@ -14,7 +14,7 @@ pipeline {
         stage('Test') {
             steps {
                 dir('project1') {
-                    sh 'python3 -m unittest test_sum_numbers.py'
+                    sh 'python3 sum_numbers.py'
                 }
             }
         }
