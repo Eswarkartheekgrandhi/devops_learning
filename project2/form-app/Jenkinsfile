@@ -30,21 +30,18 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                dir('form-app') {
-                    sh '''
-                    docker compose build
-                    '''
+                dir('project2/form-app') {
+                    sh 'docker-compose build'
                 }
             }
         }
 
         stage('Deploy Application') {
             steps {
-                dir('form-app') {
+                dir('project2/form-app') {
                     sh '''
-                    docker compose down || true
-
-                    docker compose up -d
+                    docker-compose down || true
+                    docker-compose up -d
                     '''
                 }
             }
