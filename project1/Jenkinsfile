@@ -9,9 +9,19 @@ pipeline {
             }
         }
 
+        stage('Debug') {
+            steps {
+                sh '''
+                pwd
+                ls -R
+                '''
+            }
+        }
+
         stage('Test') {
             steps {
                 sh '''
+                cd project1
                 python3 -m unittest test_sum_numbers.py
                 '''
             }
@@ -20,6 +30,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
+                cd project1
                 python3 sum_numbers.py > output.txt
                 '''
             }
