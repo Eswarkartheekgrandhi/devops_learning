@@ -21,7 +21,9 @@ pipeline {
         stage('Test') {
             steps {
                 sh '''
+                pwd
                 cd project1
+                pwd
                 python3 -m unittest test_sum_numbers.py
                 '''
             }
