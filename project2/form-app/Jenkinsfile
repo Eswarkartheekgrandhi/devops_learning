@@ -18,6 +18,16 @@ pipeline {
             }
         }
 
+        stage('Docker Check') {
+            steps {
+                sh '''
+                docker --version
+                docker compose version || true
+                docker-compose --version || true
+                '''
+            }
+        }
+
         stage('Build Docker Images') {
             steps {
                 dir('form-app') {
