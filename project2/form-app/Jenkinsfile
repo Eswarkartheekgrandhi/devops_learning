@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Verify Files') {
+            steps {
+                sh '''
+                pwd
+                ls -R
+                '''
+            }
+        }
+
+        stage('Build Docker Images') {
+            steps {
+                dir('form-app') {
+                    sh '''
+                    docker compose build
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy Application') {
+            steps {
+                dir('form-app') {
+                    sh '''
+                    docker compose down || true
+
+                    docker compose up -d
+                    '''
+                }
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                sh '''
+                docker ps
+                '''
+            }
+        }
+    }
+
+    post {
+
+        success {
+            echo 'Application deployed successfully'
+        }
+
+        failure {
+            echo 'Deployment failed'
+        }
+    }
+}
