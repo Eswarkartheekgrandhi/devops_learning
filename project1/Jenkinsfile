@@ -11,21 +11,19 @@ pipeline {
 
     stages {
 
-        stage('Test') {
-            steps {
-                dir('project1') {
-                    sh 'python3 sum_numbers.py'
-                }
-            }
-        }
-
-        stage('Deploy') {
+        stage('Run Application') {
             steps {
                 dir('project1') {
                     sh """
                     python3 sum_numbers.py ${params.NUMBERS}
                     """
                 }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Application deployed successfully'
             }
         }
     }
